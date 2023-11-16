@@ -43,7 +43,7 @@ public class Bullet : MonoBehaviour
     void ReturnToPool()
     {
         target = null;
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     private void OnEnable()
