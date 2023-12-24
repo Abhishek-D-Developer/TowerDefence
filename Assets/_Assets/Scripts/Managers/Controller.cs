@@ -17,25 +17,25 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Check for touch input
-        if (Input.touchCount > 0)
+        // Check for mouse button click
+        if (Input.GetMouseButtonDown(0)) // Change 0 to the desired mouse button index
         {
-            Touch touch = Input.GetTouch(0);
+            // Raycast to get the object under the mouse
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-            // Check if the touch phase is the beginning of a touch
-            if (touch.phase == TouchPhase.Began)
+            // Perform the raycast
+            if (Physics.Raycast(ray, out hit))
             {
-                // Convert touch position to world space
-                Vector3 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
-                touchPos.z = 0f; // Ensure the z-coordinate is appropriate for your scene
+                // Check if the hit object has the BoxScript attached
+                TurretArea boxScript = hit.collider.GetComponent<TurretArea>();
 
-                // Raycast to check if the touch is on the ground
-                RaycastHit2D hit = Physics2D.Raycast(touchPos, Vector2.zero, Mathf.Infinity, groundLayer);
-
-                if (hit.collider != null)
+                // If the script is found, do something with it
+                if (boxScript != null)
                 {
-                    // Open the weapon panel
-                    //weaponPanel.SetActive(true);
+                    // Access methods or properties of the BoxScript
+                    boxScript.occupied = true;
+                    GameObject obj = Instantiate(weaponPanel, boxScript.turretSpawnPos.localPosition, Quaternion.identity);
                 }
             }
         }
